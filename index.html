@@ -165,15 +165,18 @@
                         </div>
 
                         <form id="consultation-form" class="space-y-4" onsubmit="handleFormSubmit(event)">
+                            <!-- Spam trap: real visitors never see or tick this -->
+                            <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div class="space-y-1.5">
                                     <label class="block text-[11px] font-cinzel tracking-wider text-goldLight uppercase">First Name *</label>
-                                    <input type="text" required placeholder="First name" 
+                                    <input type="text" name="first_name" required placeholder="First name" 
                                            class="w-full bg-darkBg border border-goldPrimary/20 rounded-xl px-3.5 py-3 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-goldPrimary focus:ring-1 focus:ring-goldPrimary transition-all text-sm">
                                 </div>
                                 <div class="space-y-1.5">
                                     <label class="block text-[11px] font-cinzel tracking-wider text-goldLight uppercase">Last Name *</label>
-                                    <input type="text" required placeholder="Last name" 
+                                    <input type="text" name="last_name" required placeholder="Last name" 
                                            class="w-full bg-darkBg border border-goldPrimary/20 rounded-xl px-3.5 py-3 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-goldPrimary focus:ring-1 focus:ring-goldPrimary transition-all text-sm">
                                 </div>
                             </div>
@@ -181,19 +184,19 @@
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div class="space-y-1.5">
                                     <label class="block text-[11px] font-cinzel tracking-wider text-goldLight uppercase">Company / Brand *</label>
-                                    <input type="text" required placeholder="Brand name" 
+                                    <input type="text" name="company" required placeholder="Brand name" 
                                            class="w-full bg-darkBg border border-goldPrimary/20 rounded-xl px-3.5 py-3 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-goldPrimary focus:ring-1 focus:ring-goldPrimary transition-all text-sm">
                                 </div>
                                 <div class="space-y-1.5">
                                     <label class="block text-[11px] font-cinzel tracking-wider text-goldLight uppercase">Work Email *</label>
-                                    <input type="email" required placeholder="name@company.com" 
+                                    <input type="email" name="email" required placeholder="name@company.com" 
                                            class="w-full bg-darkBg border border-goldPrimary/20 rounded-xl px-3.5 py-3 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-goldPrimary focus:ring-1 focus:ring-goldPrimary transition-all text-sm">
                                 </div>
                             </div>
 
                             <div class="space-y-1.5">
                                 <label class="block text-[11px] font-cinzel tracking-wider text-goldLight uppercase">Select Industry Niche *</label>
-                                <select required class="w-full bg-darkBg border border-goldPrimary/20 rounded-xl px-3.5 py-3 text-gray-100 focus:outline-none focus:border-goldPrimary focus:ring-1 focus:ring-goldPrimary transition-all text-sm">
+                                <select name="industry" required class="w-full bg-darkBg border border-goldPrimary/20 rounded-xl px-3.5 py-3 text-gray-100 focus:outline-none focus:border-goldPrimary focus:ring-1 focus:ring-goldPrimary transition-all text-sm">
                                     <option value="" disabled selected>Choose your industry sector</option>
                                     <option value="Luxury Fashion & Lifestyle">Luxury Fashion & Lifestyle</option>
                                     <option value="FinTech, Web3 & Wealth Tech">FinTech, Web3 & Wealth Tech</option>
@@ -206,7 +209,7 @@
 
                             <div class="space-y-1.5">
                                 <label class="block text-[11px] font-cinzel tracking-wider text-goldLight uppercase">Target Media Channel Goal *</label>
-                                <select required class="w-full bg-darkBg border border-goldPrimary/20 rounded-xl px-3.5 py-3 text-gray-100 focus:outline-none focus:border-goldPrimary focus:ring-1 focus:ring-goldPrimary transition-all text-sm">
+                                <select name="media_channel_goal" required class="w-full bg-darkBg border border-goldPrimary/20 rounded-xl px-3.5 py-3 text-gray-100 focus:outline-none focus:border-goldPrimary focus:ring-1 focus:ring-goldPrimary transition-all text-sm">
                                     <option value="" disabled selected>Choose primary PR channel</option>
                                     <option value="Tier-1 Print & Digital Press (Forbes, WSJ, Bloomberg)">Tier-1 Print & Digital Press (Forbes, WSJ, Bloomberg)</option>
                                     <option value="Television & Broadcast Features">Television & Broadcast Features</option>
@@ -442,17 +445,41 @@
             });
         });
 
-        // Custom non-alert form handler with toast notification
-        function handleFormSubmit(event) {
+        // Google Apps Script web app that emails each submission to trisha.ogweno@gmail.com
+        const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwNhjBTyB-86pOsqtPfVwDs5M_wtFOXBRhwvHzDFEPwDIZ9wVBgvPaxPHCMBuQDEMRY/exec';
+
+        // Form handler: sends the entry to the Apps Script, then shows a toast
+        async function handleFormSubmit(event) {
             event.preventDefault();
+            const form = event.target;
             const toast = document.getElementById('toast');
             const toastMessage = document.getElementById('toast-message');
-            
-            toastMessage.textContent = "Thank you! Your strategy consultation request has been successfully submitted.";
+            const btn = form.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'SENDING...';
+
+            let ok = true;
+            try {
+                await fetch(FORM_ENDPOINT, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: new URLSearchParams(new FormData(form))
+                });
+            } catch (e) {
+                ok = false;
+            }
+
+            toastMessage.textContent = ok
+                ? "Thank you! Your strategy consultation request has been successfully submitted."
+                : "Something went wrong. Please try again.";
+            if (ok) form.reset();
+
+            btn.disabled = false;
+            btn.textContent = originalText;
+
             toast.classList.remove('translate-y-24', 'opacity-0');
             toast.classList.add('translate-y-0', 'opacity-100');
-
-            event.target.reset();
 
             setTimeout(() => {
                 toast.classList.remove('translate-y-0', 'opacity-100');
