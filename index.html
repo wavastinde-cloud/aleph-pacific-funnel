@@ -491,10 +491,9 @@
             }, 5000);
         }
     </script>
-    <script type="text/javascript">
+   <script type="text/javascript">
   (function() {
-    // Isolated email routing endpoint
-    const TRACKING_ENDPOINT = 'https://alephpacific.com';
+    const TRACKING_ENDPOINT = '/api/track';
 
     function getDeviceDetails() {
       const ua = navigator.userAgent;
@@ -506,29 +505,20 @@
 
     function dispatchRealtimeEvent(actionType) {
       try {
-        const payload = {
+        const payload = JSON.stringify({
           action: actionType,
           page: window.location.pathname,
           referrer: document.referrer || "directly",
           device: getDeviceDetails(),
           time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + " Pacific"
-        };
+        });
 
-        // This runs instantly in a completely detached background process thread.
-        // Even if the tracking server completely crashes or lags, your site will never stall.
-        fetch(TRACKING_ENDPOINT, {
-          method: 'POST',
-          mode: 'cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        }).catch(() => {});
+        navigator.sendBeacon(TRACKING_ENDPOINT, payload);
       } catch (e) {}
     }
 
-    // Fire instantly when the user lands on the website entrance point
     window.addEventListener('DOMContentLoaded', () => dispatchRealtimeEvent('open'));
 
-    // Fire instantly when the user closes the tab or leaves the page window
     window.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden') {
         dispatchRealtimeEvent('left');
@@ -536,5 +526,6 @@
     });
   })();
 </script>
+ 
 </body>
 </html>
