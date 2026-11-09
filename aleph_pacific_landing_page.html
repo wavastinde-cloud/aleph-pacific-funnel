@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALEPH PACIFIC — Amplify Your Impact. Secure The Spotlight.</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for Luxury Serif & Clean Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#090B0E',
+                        darkCard: '#11141A',
+                        goldPrimary: '#E5C158',
+                        goldLight: '#F5E09E',
+                        goldDark: '#B89735',
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', '"Cinzel"', 'serif'],
+                        cinzel: ['"Cinzel"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFF3C4 0%, #E5C158 50%, #B89735 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-gradient-bg {
+            background: linear-gradient(135deg, #F3D984 0%, #D8B045 50%, #9C7923 100%);
+        }
+        .gold-border-glow {
+            box-shadow: 0 0 20px rgba(229, 193, 88, 0.35), inset 0 0 15px rgba(229, 193, 88, 0.2);
+        }
+        .gold-glow-hover:hover {
+            box-shadow: 0 0 30px rgba(229, 193, 88, 0.6), inset 0 0 20px rgba(229, 193, 88, 0.4);
+        }
+        .radial-bg {
+            background: radial-gradient(circle at 70% 30%, #1a1e28 0%, #090B0E 70%);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090B0E;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #B89735;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-darkBg text-gray-100 font-sans antialiased selection:bg-goldPrimary selection:text-black radial-bg min-h-screen">
+
+    <!-- Notification Toast / Modal Replacement for Alert -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-darkCard border border-goldPrimary/50 text-goldLight px-6 py-4 rounded-xl shadow-2xl flex items-center space-x-3">
+        <svg class="w-6 h-6 text-goldPrimary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        <div>
+            <h4 class="font-bold font-cinzel text-sm">Success</h4>
+            <p id="toast-message" class="text-xs text-gray-300 font-sans">Your consultation request has been received.</p>
+        </div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 bg-darkBg/90 backdrop-blur-md border-b border-goldPrimary/10">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="font-cinzel font-bold text-xl md:text-2xl tracking-[0.2em] gold-gradient-text flex items-center space-x-2">
+                <span>ALEPH PACIFIC</span>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wide text-gray-300">
+                <a href="#consultation-funnel" class="hover:text-goldPrimary transition-colors">Start Funnel</a>
+                <a href="#services" class="hover:text-goldPrimary transition-colors">Services</a>
+                <a href="#case-studies" class="hover:text-goldPrimary transition-colors">Case Studies</a>
+                <a href="#process" class="hover:text-goldPrimary transition-colors">Our Process</a>
+                <a href="#about" class="hover:text-goldPrimary transition-colors">About Us</a>
+            </nav>
+
+            <!-- Contact CTA Button -->
+            <div class="hidden md:block">
+                <a href="#consultation-funnel" class="inline-block px-6 py-2.5 rounded-full text-sm font-semibold font-cinzel text-black gold-gradient-bg gold-border-glow gold-glow-hover transition-all duration-300">
+                    Consultation
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-goldPrimary focus:outline-none p-2">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-darkCard/95 border-b border-goldPrimary/20 px-6 py-6 space-y-4">
+            <a href="#consultation-funnel" class="block text-gray-200 hover:text-goldPrimary font-medium py-1">Start Funnel</a>
+            <a href="#services" class="block text-gray-200 hover:text-goldPrimary font-medium py-1">Services</a>
+            <a href="#case-studies" class="block text-gray-200 hover:text-goldPrimary font-medium py-1">Case Studies</a>
+            <a href="#process" class="block text-gray-200 hover:text-goldPrimary font-medium py-1">Our Process</a>
+            <a href="#about" class="block text-gray-200 hover:text-goldPrimary font-medium py-1">About Us</a>
+            <div class="pt-2">
+                <a href="#consultation-funnel" class="block text-center px-6 py-3 rounded-full text-sm font-semibold font-cinzel text-black gold-gradient-bg gold-border-glow">
+                    Consultation
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section with High-Converting Funnel Intake Form at the Top -->
+    <section id="consultation-funnel" class="relative pt-12 pb-24 overflow-hidden">
+        <!-- Subtle background ambient glows -->
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-goldPrimary/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute top-1/3 right-0 w-[500px] h-[500px] bg-goldPrimary/5 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Column: Copy & Value Proposition -->
+                <div class="lg:col-span-6 space-y-8 z-10">
+                    <div class="space-y-4">
+                        <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-goldPrimary/10 border border-goldPrimary/30 text-goldLight text-xs font-cinzel tracking-widest uppercase">
+                            <span>Elite Public Relations & Media Mastery</span>
+                        </div>
+                        <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.15]">
+                            <span class="gold-gradient-text">DOMINATE THE NARRATIVE.</span><br>
+                            SECURE TOP-TIER MEDIA COVERAGE.
+                        </h1>
+                        <p class="text-gray-300 text-base sm:text-lg font-sans leading-relaxed max-w-xl">
+                            Aleph Pacific accelerates brand visibility and influence by securing unmatched features in the world's most prestigious publications.
+                        </p>
+                    </div>
+
+                    <!-- Quick Highlights -->
+                    <div class="grid grid-cols-2 gap-4 pt-2">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-5 h-5 rounded-full bg-goldPrimary/20 flex items-center justify-center text-goldPrimary mt-0.5 flex-shrink-0">✓</div>
+                            <span class="text-xs text-gray-300 font-sans">Guaranteed Tier-1 Press (Forbes, WSJ, Bloomberg)</span>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="w-5 h-5 rounded-full bg-goldPrimary/20 flex items-center justify-center text-goldPrimary mt-0.5 flex-shrink-0">✓</div>
+                            <span class="text-xs text-gray-300 font-sans">Bespoke Broadcast & TV Spotlight Campaigns</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: High-Converting Step-by-Step Funnel Intake Form -->
+                <div class="lg:col-span-6 relative z-20">
+                    <div class="bg-darkCard/95 border border-goldPrimary/30 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-md gold-border-glow">
+                        <div class="text-center mb-6 space-y-1">
+                            <span class="text-xs font-cinzel tracking-[0.2em] text-goldPrimary uppercase">Step-by-Step Strategy Funnel</span>
+                            <h3 class="font-serif text-2xl font-bold text-gray-100">Claim Your Strategy Session</h3>
+                        </div>
+
+                        <form id="consultation-form" class="space-y-4" onsubmit="handleFormSubmit(event)">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="space-y-1.5">
+                                    <label class="block text-[11px] font-cinzel tracking-wider text-goldLight uppercase">First Name *</label>
+                                    <input type="text" required placeholder="First name" 
+                                           class="w-full bg-darkBg border border-goldPrimary/20 rounded-xl px-3.5 py-3 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-goldPrimary focus:ring-1 focus:ring-goldPrimary transition-all text-sm">
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="block text-[11px] font-cinzel tracking-wider text-goldLight uppercase">Last Name *</label>
+                                    <input type="text" required placeholder="Last name" 
+                                           class="w-full bg-darkBg border border-goldPrimary/20 rounded-xl px-3.5 py-3 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-goldPrimary focus:ring-1 focus:ring-goldPrimary transition-all text-sm">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="space-y-1.5">
+                                    <label class="block text-[11px] font-cinzel tracking-wider text-goldLight uppercase">Company / Brand *</label>
+                                    <input type="text" required placeholder="Brand name" 
+                                           class="w-full bg-darkBg border border-goldPrimary/20 rounded-xl px-3.5 py-3 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-goldPrimary focus:ring-1 focus:ring-goldPrimary transition-all text-sm">
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="block text-[11px] font-cinzel tracking-wider text-goldLight uppercase">Work Email *</label>
+                                    <input type="email" required placeholder="name@company.com" 
+                                           class="w-full bg-darkBg border border-goldPrimary/20 rounded-xl px-3.5 py-3 text-gray-100 placeholder-gray-500 focus:outline-none focus:border-goldPrimary focus:ring-1 focus:ring-goldPrimary transition-all text-sm">
+                                </div>
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <label class="block text-[11px] font-cinzel tracking-wider text-goldLight uppercase">Select Industry Niche *</label>
+                                <select required class="w-full bg-darkBg border border-goldPrimary/20 rounded-xl px-3.5 py-3 text-gray-100 focus:outline-none focus:border-goldPrimary focus:ring-1 focus:ring-goldPrimary transition-all text-sm">
+                                    <option value="" disabled selected>Choose your industry sector</option>
+                                    <option value="Luxury Fashion & Lifestyle">Luxury Fashion & Lifestyle</option>
+                                    <option value="FinTech, Web3 & Wealth Tech">FinTech, Web3 & Wealth Tech</option>
+                                    <option value="Health, Biotech & Clinical">Health, Biotech & Clinical</option>
+                                    <option value="Corporate Enterprise & SaaS">Corporate Enterprise & SaaS</option>
+                                    <option value="Creator Economy & Media">Creator Economy & Media</option>
+                                    <option value="Real Estate & Architecture">Real Estate & Architecture</option>
+                                </select>
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <label class="block text-[11px] font-cinzel tracking-wider text-goldLight uppercase">Target Media Channel Goal *</label>
+                                <select required class="w-full bg-darkBg border border-goldPrimary/20 rounded-xl px-3.5 py-3 text-gray-100 focus:outline-none focus:border-goldPrimary focus:ring-1 focus:ring-goldPrimary transition-all text-sm">
+                                    <option value="" disabled selected>Choose primary PR channel</option>
+                                    <option value="Tier-1 Print & Digital Press (Forbes, WSJ, Bloomberg)">Tier-1 Print & Digital Press (Forbes, WSJ, Bloomberg)</option>
+                                    <option value="Television & Broadcast Features">Television & Broadcast Features</option>
+                                    <option value="Podcast & Audio Tour Placement">Podcast & Audio Tour Placement</option>
+                                    <option value="Social Media Spotlight & Verified PR">Social Media Spotlight & Verified PR</option>
+                                    <option value="Thought Leadership Op-Eds">Thought Leadership Op-Eds</option>
+                                </select>
+                            </div>
+
+                            <div class="pt-3">
+                                <button type="submit" 
+                                        class="w-full py-3.5 rounded-xl font-bold font-cinzel text-black text-sm gold-gradient-bg gold-border-glow gold-glow-hover transition-all duration-300 transform hover:-translate-y-0.5 tracking-wider uppercase">
+                                    SCHEDULE STRATEGY CONSULTATION →
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- As Featured In Section -->
+    <section class="py-16 border-t border-b border-goldPrimary/15 bg-darkCard/40 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-6 text-center space-y-10">
+            <h3 class="font-cinzel text-sm md:text-base uppercase tracking-[0.3em] text-goldLight/80">
+                As Featured In
+            </h3>
+
+            <!-- Logos Grid / Flex -->
+            <div class="flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-85">
+                <span class="font-serif font-bold text-2xl md:text-3xl tracking-wider text-gray-200 hover:text-goldPrimary transition-colors cursor-default">Forbes</span>
+                <span class="font-cinzel font-extrabold text-2xl md:text-3xl tracking-[0.25em] text-gray-200 hover:text-goldPrimary transition-colors cursor-default">VOGUE</span>
+                <span class="font-serif font-bold text-lg md:text-xl tracking-tight text-gray-200 hover:text-goldPrimary transition-colors cursor-default uppercase">THE WALL STREET JOURNAL.</span>
+                <span class="font-sans font-semibold text-xl md:text-2xl tracking-tight text-gray-200 hover:text-goldPrimary transition-colors cursor-default">Bloomberg</span>
+                <span class="font-sans font-bold text-sm md:text-base tracking-[0.15em] text-gray-200 hover:text-goldPrimary transition-colors cursor-default text-center leading-tight">BUSINESS<br><span class="text-xs tracking-[0.3em]">INSIDER</span></span>
+                <span class="font-sans font-bold text-xl md:text-2xl text-gray-200 hover:text-goldPrimary transition-colors cursor-default flex items-center space-x-1">
+                    <span class="bg-goldPrimary text-black px-1.5 py-0.5 rounded text-lg font-black">TC</span>
+                    <span>TechCrunch</span>
+                </span>
+                <span class="font-serif font-extrabold text-3xl md:text-4xl tracking-tighter text-gray-200 hover:text-goldPrimary transition-colors cursor-default">GQ</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 bg-darkBg relative">
+        <div class="max-w-7xl mx-auto px-6 space-y-16">
+            <div class="text-center space-y-4">
+                <h4 class="font-cinzel text-xs md:text-sm tracking-[0.3em] text-goldPrimary uppercase">Core Capabilities</h4>
+                <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold gold-gradient-text">
+                    Elevating Elite Brands
+                </h2>
+                <p class="text-gray-300 font-sans max-w-2xl mx-auto text-sm sm:text-base">
+                    Comprehensive public relations and authority building tailored for top-tier enterprises and visionary founders.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="bg-darkCard border border-goldPrimary/20 rounded-2xl p-8 space-y-4 hover:border-goldPrimary/60 transition-all duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-goldPrimary/10 border border-goldPrimary/30 flex items-center justify-center text-goldPrimary font-cinzel font-bold text-xl">01</div>
+                    <h3 class="font-cinzel font-bold text-lg text-goldLight">Media Relations & Press</h3>
+                    <p class="text-gray-300 text-sm font-sans leading-relaxed">
+                        Direct editorial access to Forbes, Bloomberg, Wall Street Journal, and Vogue journalists to secure guaranteed high-impact features.
+                    </p>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="bg-darkCard border border-goldPrimary/20 rounded-2xl p-8 space-y-4 hover:border-goldPrimary/60 transition-all duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-goldPrimary/10 border border-goldPrimary/30 flex items-center justify-center text-goldPrimary font-cinzel font-bold text-xl">02</div>
+                    <h3 class="font-cinzel font-bold text-lg text-goldLight">Executive Positioning</h3>
+                    <p class="text-gray-300 text-sm font-sans leading-relaxed">
+                        Turn founders and executives into recognized industry authorities through premium thought-leadership op-eds and broadcast appearances.
+                    </p>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="bg-darkCard border border-goldPrimary/20 rounded-2xl p-8 space-y-4 hover:border-goldPrimary/60 transition-all duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-goldPrimary/10 border border-goldPrimary/30 flex items-center justify-center text-goldPrimary font-cinzel font-bold text-xl">03</div>
+                    <h3 class="font-cinzel font-bold text-lg text-goldLight">Crisis & Reputation Management</h3>
+                    <p class="text-gray-300 text-sm font-sans leading-relaxed">
+                        Discreet, high-level narrative steering and digital footprint safeguarding for elite corporations and high-net-worth individuals.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Step-by-Step Our Process Section -->
+    <section id="process" class="py-24 bg-darkCard/50 border-t border-b border-goldPrimary/15 relative">
+        <div class="max-w-7xl mx-auto px-6 space-y-16">
+            <div class="text-center space-y-4">
+                <h4 class="font-cinzel text-xs md:text-sm tracking-[0.3em] text-goldPrimary uppercase">Methodology</h4>
+                <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold gold-gradient-text">
+                    Our Step-by-Step PR Blueprint
+                </h2>
+                <p class="text-gray-300 font-sans max-w-2xl mx-auto text-sm sm:text-base">
+                    A rigorous 4-step framework designed to transition your brand from obscurity to undeniable market authority.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- Step 1 -->
+                <div class="bg-darkCard border border-goldPrimary/20 rounded-2xl p-6 relative space-y-4">
+                    <span class="absolute top-4 right-4 font-cinzel text-3xl font-black text-goldPrimary/20">01</span>
+                    <h3 class="font-cinzel font-bold text-goldLight text-base pt-2">Audit & Narrative</h3>
+                    <p class="text-xs text-gray-300 font-sans leading-relaxed">
+                        We analyze your brand footprint and formulate a magnetic angle that media outlets actively look for.
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="bg-darkCard border border-goldPrimary/20 rounded-2xl p-6 relative space-y-4">
+                    <span class="absolute top-4 right-4 font-cinzel text-3xl font-black text-goldPrimary/20">02</span>
+                    <h3 class="font-cinzel font-bold text-goldLight text-base pt-2">Pitch Crafting</h3>
+                    <p class="text-xs text-gray-300 font-sans leading-relaxed">
+                        Our editors craft exclusive press briefings tailored specifically to senior editors at tier-1 publications.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="bg-darkCard border border-goldPrimary/20 rounded-2xl p-6 relative space-y-4">
+                    <span class="absolute top-4 right-4 font-cinzel text-3xl font-black text-goldPrimary/20">03</span>
+                    <h3 class="font-cinzel font-bold text-goldLight text-base pt-2">Media Syndication</h3>
+                    <p class="text-xs text-gray-300 font-sans leading-relaxed">
+                        We leverage our direct journalist relationships to secure features across Forbes, Bloomberg, and WSJ.
+                    </p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="bg-darkCard border border-goldPrimary/20 rounded-2xl p-6 relative space-y-4">
+                    <span class="absolute top-4 right-4 font-cinzel text-3xl font-black text-goldPrimary/20">04</span>
+                    <h3 class="font-cinzel font-bold text-goldLight text-base pt-2">Authority Amplification</h3>
+                    <p class="text-xs text-gray-300 font-sans leading-relaxed">
+                        We syndicate your press features across digital channels to drive inbound enterprise clients and valuation growth.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Studies & Verified Client Testimonials Section -->
+    <section id="case-studies" class="py-24 relative bg-darkBg">
+        <div class="max-w-7xl mx-auto px-6 space-y-16">
+            <div class="text-center space-y-4">
+                <h4 class="font-cinzel text-xs md:text-sm tracking-[0.3em] text-goldPrimary uppercase">Proven Milestones</h4>
+                <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold gold-gradient-text">
+                    Verified Client Case Studies & Testimonials
+                </h2>
+                <p class="text-gray-300 font-sans max-w-2xl mx-auto text-sm sm:text-base">
+                    Discover how our bespoke PR campaigns have secured tier-1 spotlight and engineered market dominance for visionary leaders.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-darkCard border border-goldPrimary/20 rounded-2xl p-8 flex flex-col justify-between relative group hover:border-goldPrimary/60 transition-all duration-300">
+                    <div class="space-y-4 relative z-10">
+                        <div class="text-goldPrimary text-sm">★★★★★</div>
+                        <p class="text-gray-300 text-sm italic font-serif leading-relaxed">
+                            "Aleph Pacific engineered our international thought-leadership campaign across Bloomberg and The Wall Street Journal. Their media access directly supported our Series D expansion rollout."
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-6 border-t border-goldPrimary/10 relative z-10">
+                        <h4 class="font-cinzel font-bold text-goldLight text-base">Global FinTech Expansion</h4>
+                        <p class="text-xs text-gray-400 font-sans mt-0.5">Tier-1 Financial Technology Partner</p>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-darkCard border border-goldPrimary/20 rounded-2xl p-8 flex flex-col justify-between relative group hover:border-goldPrimary/60 transition-all duration-300">
+                    <div class="space-y-4 relative z-10">
+                        <div class="text-goldPrimary text-sm">★★★★★</div>
+                        <p class="text-gray-300 text-sm italic font-serif leading-relaxed">
+                            "The level of discretion, VIP relationship management, and international VOGUE and GQ cover features Aleph Pacific delivered for our flagship Paris Fashion Week showcase exceeded all expectations."
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-6 border-t border-goldPrimary/10 relative z-10">
+                        <h4 class="font-cinzel font-bold text-goldLight text-base">Haute Horlogerie & Fashion</h4>
+                        <p class="text-xs text-gray-400 font-sans mt-0.5">Luxury Swiss & Parisian Houses</p>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-darkCard border border-goldPrimary/20 rounded-2xl p-8 flex flex-col justify-between relative group hover:border-goldPrimary/60 transition-all duration-300">
+                    <div class="space-y-4 relative z-10">
+                        <div class="text-goldPrimary text-sm">★★★★★</div>
+                        <p class="text-gray-300 text-sm italic font-serif leading-relaxed">
+                            "Their meticulous op-ed placements and broadcast media training positioned our executive team as industry authorities. We secured front-page TechCrunch and Forbes coverage within 45 days."
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-6 border-t border-goldPrimary/10 relative z-10">
+                        <h4 class="font-cinzel font-bold text-goldLight text-base">Enterprise AI & Cloud Infrastructure</h4>
+                        <p class="text-xs text-gray-400 font-sans mt-0.5">Silicon Valley & London Scale-up</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-goldPrimary/15 bg-darkCard/80 py-12">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+            <div>
+                <a href="#" class="font-cinzel font-bold text-xl tracking-[0.2em] gold-gradient-text">
+                    ALEPH PACIFIC
+                </a>
+                <p class="text-xs text-gray-400 mt-2 font-sans">Global PR & Elite Brand Positioning Agency.</p>
+            </div>
+
+            <div class="text-xs text-gray-500 font-sans">
+                &copy; 2026 Aleph Pacific. All rights reserved. Designed for elite visionaries.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive JavaScript -->
+    <script>
+        // Toggle mobile menu
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking a link
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Custom non-alert form handler with toast notification
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            
+            toastMessage.textContent = "Thank you! Your strategy consultation request has been successfully submitted.";
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            event.target.reset();
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
