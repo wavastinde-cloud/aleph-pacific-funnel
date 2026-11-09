@@ -491,40 +491,5 @@
             }, 5000);
         }
     </script>
-   <script type="text/javascript">
-  (function() {
-    const TRACKING_ENDPOINT = 'https://workers.dev';
-    function getDeviceDetails() {
-      const ua = navigator.userAgent;
-      if (/iPhone/i.test(ua)) return "iPhone (iOS 18.7), Safari";
-      if (/Macintosh/i.test(ua) && /Chrome/i.test(ua)) return "Mac, Chrome";
-      if (/Windows/i.test(ua)) return "Windows PC";
-      return "Desktop/Mobile Device";
-    }
-
-    function dispatchRealtimeEvent(actionType) {
-      try {
-        const payload = JSON.stringify({
-          action: actionType,
-          page: window.location.pathname,
-          referrer: document.referrer || "directly",
-          device: getDeviceDetails(),
-          time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + " Pacific"
-        });
-
-        navigator.sendBeacon(TRACKING_ENDPOINT, payload);
-      } catch (e) {}
-    }
-
-    window.addEventListener('DOMContentLoaded', () => dispatchRealtimeEvent('open'));
-
-    window.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'hidden') {
-        dispatchRealtimeEvent('left');
-      }
-    });
-  })();
-</script>
- 
 </body>
 </html>
